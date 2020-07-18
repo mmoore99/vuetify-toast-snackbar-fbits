@@ -30,7 +30,7 @@ function install(Vue, globalOptions = {}) {
     }
 
     function show(message, options = {}) {
-        window.logJson("show:options", options);
+        //window.logJson("show:options", options);
         if (cmp) {
             const isQueueable = options.queueable !== undefined ? options.queueable : globalOptions.queueable;
 
@@ -64,20 +64,58 @@ function install(Vue, globalOptions = {}) {
 
     function shorts(options) {
         const colors = ["success", "info", "error", "warning"];
+
+        const defaultShorts = {
+            success: {
+                snackbarAttrs: {
+                    color: "success",
+                },
+                icon: "mdi-check-circle-outline",
+                iconColor: "white",
+            },
+
+            info: {
+                snackbarAttrs: {
+                    color: "info",
+                },
+                icon: "mdi-information-outline",
+                iconColor: "white",
+            },
+
+            error: {
+                snackbarAttrs: {
+                    color: "error",
+                },
+                icon: "mdi-alert-circle-outline",
+                iconColor: "white",
+            },
+
+            warning: {
+                snackbarAttrs: {
+                    color: "warning",
+                },
+                icon: "mdi-alert-outline",
+                iconColor: "white",
+            },
+        };
+
         const methods = {};
 
         colors.forEach((color) => {
             methods[color] = (message, options) => show(message, { color, ...options });
         });
 
-        if (options.shorts) {
-            for (let key in options.shorts) {
-                const localOptions = options.shorts[key];
-                window.logJson("options", { ...options });
-                window.logJson("local options", localOptions);
-                methods[key] = (message, options) => show(message, { ...localOptions, ...options });
-            }
+        const optionShorts = options.shorts ? options.shorts : {};
+        const mergedShorts = Object.assign({}, defaultShorts, optionShorts);
+        //window.logJson("mergedShorts", mergedShorts);
+
+        for (let key in mergedShorts) {
+            const localOptions = mergedShorts[key];
+            //window.logJson("options", { ...options });
+            // window.logJson("local options", localOptions);
+            methods[key] = (message, options) => show(message, { ...localOptions, ...options });
         }
+
         return methods;
     }
 

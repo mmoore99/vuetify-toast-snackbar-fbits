@@ -22,7 +22,7 @@
                         <br />
                         <v-btn @click="warning('This is a warning message')" color="primary">Show Warning</v-btn>
                         <v-btn @click="custom('This is a custom message')" color="primary">Show Custom</v-btn>
-                        <v-btn @click="showToast('This is a message with options attached.', { snackbarAttrs: { timeout: 0, color: 'orange' }, icon: '', dismissable: false, showClose: true })" color="primary">Show toast with options</v-btn>
+                        <v-btn @click="showToast('This is a message with options attached.', { snackbarAttrs: { timeout: 10000, color: 'orange' }, icon: '', isDismissable: true, isShowClose: false })" color="primary">Show toast with options</v-btn>
                         <br />
                         <br />
                         <v-btn @click="clearQueue" color="primary">Clear queue</v-btn>
@@ -40,38 +40,6 @@
                 snackbarAttrs: {},
                 queueable: false,
                 shorts: {
-                    success: {
-                        snackbarAttrs: {
-                            color: "success",
-                        },
-                        icon: "mdi-check-circle-outline",
-                        iconColor: "white",
-                    },
-
-                    info: {
-                        snackbarAttrs: {
-                            color: "info",
-                        },
-                        icon: "mdi-information-outline",
-                        iconColor: "white",
-                    },
-
-                    error: {
-                        snackbarAttrs: {
-                            color: "error",
-                        },
-                        icon: "mdi-alert-circle-outline",
-                        iconColor: "white",
-                    },
-
-                    warning: {
-                        snackbarAttrs: {
-                            color: "warning",
-                        },
-                        icon: "mdi-alert-outline",
-                        iconColor: "white",
-                    },
-
                     custom: {
                         snackbarAttrs: {
                             color: "blue",

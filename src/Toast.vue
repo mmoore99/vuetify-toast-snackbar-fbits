@@ -10,11 +10,10 @@
                 <span class="pl-2 text-h6 font-weight-regular">{{ message }}</span>
             </v-col>
         </v-row>
-        <template v-if="showClose" v-slot:action="{ attrs }">
+        <template v-if="isShowClose" v-slot:action="{ attrs }">
             <v-row>
                 <v-col class="d-flex align-center">
                     <v-btn
-                        v-if="showClose"
                         v-bind="attrs"
                         :icon="isCloseIcon"
                         :text="!isCloseIcon"
@@ -32,12 +31,9 @@
 <script>
     export default {
         props: {
-            // see "defaultSnackbarAttrs"  in data for defaults
+            // see "defaultSnackbarAttrs" in data for defaults
             snackbarAttrs: {
-                type: Object,
-                default() {
-                    return {};
-                }
+                type: Object
             },
             icon: {
                 type: String,
@@ -56,14 +52,14 @@
                 default: ""
             },
 
-            dismissable: {
+            isDismissable: {
                 type: Boolean,
                 default: true
             },
 
-            showClose: {
+            isShowClose: {
                 type: Boolean,
-                default: true
+                default: false
             },
 
             isCloseIcon: {
@@ -96,7 +92,7 @@
                 bottom: false,
                 left: false,
                 right: false,
-                timeout: 0,
+                timeout: 3000,
                 elevation: 24,
                 multiline: false
             }
@@ -122,7 +118,7 @@
             },
 
             dismiss() {
-                if (this.dismissable) {
+                if (this.isDismissable) {
                     this.close();
                 }
             }
@@ -130,8 +126,8 @@
 
         computed: {
             mergedAttrs() {
-                window.logJson(`defaultSnackbarAttrs`, this.defaultSnackbarAttrs);
-                window.logJson(`snackbarAttrs`, this.snackbarAttrs);
+                //window.logJson(`defaultSnackbarAttrs`, this.defaultSnackbarAttrs);
+                //window.logJson(`snackbarAttrs`, this.snackbarAttrs);
                 return Object.assign(
                     {},
                     this.defaultSnackbarAttrs,
@@ -143,54 +139,4 @@
 </script>
 
 <style>
-    .vts {
-        max-width: none !important;
-        width: auto !important;
-    }
-
-    .vts .v-snack__content {
-        justify-content: flex-start;
-    }
-
-    .vts__icon {
-        margin-right: 12px;
-    }
-
-    .vts__message {
-        margin-right: auto;
-    }
-
-    .vts__close {
-        margin: 0 -8px 0 24px !important;
-        justify-self: flex-end;
-    }
-
-    .vts.v-snack--vertical .vts__icon {
-        margin: 0 0 12px !important;
-    }
-
-    .vts.v-snack--vertical .v-snack__content {
-        padding-bottom: 16px !important;
-    }
-
-    .vts.v-snack--vertical .vts__message--padded {
-        padding: 12px 0 0;
-    }
-
-    .vts.v-snack--vertical .vts__icon + .vts__message {
-        padding-top: 0;
-    }
-
-    .vts.v-snack--vertical .vts__close {
-        margin: 12px 0 -8px !important;
-    }
-
-    .vts.v-snack--vertical .vts__close--icon {
-        margin: 0 !important;
-        position: absolute;
-        right: 4px;
-        top: 4px;
-        transform: scale(0.75);
-        padding: 4px !important;
-    }
 </style>
