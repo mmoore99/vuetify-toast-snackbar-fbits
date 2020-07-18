@@ -58,12 +58,12 @@
 
             dismissable: {
                 type: Boolean,
-                default: true
+                default: false
             },
 
             showClose: {
                 type: Boolean,
-                default: true
+                default: false
             },
 
             isCloseIcon: {
@@ -73,12 +73,14 @@
 
             closeText: {
                 type: String,
-                default: ""
+                default: "Close"
             },
+
             closeIcon: {
                 type: String,
                 default: "mdi-close-circle"
             },
+
             closeColor: {
                 type: String,
                 default: "white"
