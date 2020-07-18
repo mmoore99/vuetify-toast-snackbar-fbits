@@ -14,11 +14,14 @@
             <v-row>
                 <v-col class="d-flex align-center">
                     <v-btn
-                        color="white"
-                        text
+                        v-if="showClose"
                         v-bind="attrs"
+                        :icon="!closeText"
+                        :text="!!closeText"
+                        :color="closeColor"
                         @click="close">
-                        Close
+                        <v-icon v-if="!closeText" class="pr-2">{{ closeIcon }}</v-icon>
+                        <span v-if="!!closeText">{{ closeText }}</span>
                     </v-btn>
                 </v-col>
             </v-row>
@@ -29,17 +32,20 @@
 <script>
     export default {
         props: {
+            // see "defaultSnackbarAttrs"  in data for defaults
             snackbarAttrs: {
-                type: [String],
-                default: ""
+                type: Object,
+                default() {
+                    return {};
+                }
             },
             icon: {
                 type: String,
-                default: ""
+                default: "mdi-alert-circle-outline"
             },
             iconColor: {
                 type: String,
-                default: ""
+                default: "white"
             },
             classes: {
                 type: [String, Object, Array],
@@ -57,19 +63,25 @@
 
             showClose: {
                 type: Boolean,
-                default: false
+                default: true
             },
+
+            isCloseIcon: {
+                type: Boolean,
+                default: true
+            },
+
             closeText: {
                 type: String,
                 default: ""
             },
             closeIcon: {
                 type: String,
-                default: "close"
+                default: "mdi-close-circle"
             },
             closeColor: {
                 type: String,
-                default: ""
+                default: "white"
             }
         },
 

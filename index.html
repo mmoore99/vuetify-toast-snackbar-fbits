@@ -14,14 +14,17 @@
                 <v-content class="pa-6">
                     <h1>Vuetify Toast Snackbar Demo</h1>
                     <div class="mt-4">
+                        <v-btn @click="showToast('This is a message with default settings')" color="primary">Show Defaults</v-btn>
                         <v-btn @click="success('This is a success message')" color="primary">Show Success</v-btn>
                         <v-btn @click="error('This is a error message')" color="primary">Show Error</v-btn>
                         <v-btn @click="info('This is a info message')" color="primary">Show Info</v-btn>
+                        <br />
+                        <br />
                         <v-btn @click="warning('This is a warning message')" color="primary">Show Warning</v-btn>
-                        <br />
-                        <br />
                         <v-btn @click="custom('This is a custom message')" color="primary">Show Custom</v-btn>
-                        <v-btn @click="showToast('This is a message with options attached.', { snackbarAttrs: { timeout: 6000, color: 'orange' }, icon: '', dismissable: false, showClose: true })" color="primary">Show toast with options</v-btn>
+                        <v-btn @click="showToast('This is a message with options attached.', { snackbarAttrs: { timeout: 0, color: 'orange' }, icon: '', dismissable: false, showClose: true })" color="primary">Show toast with options</v-btn>
+                        <br />
+                        <br />
                         <v-btn @click="clearQueue" color="primary">Clear queue</v-btn>
                     </div>
                 </v-content>
@@ -34,19 +37,10 @@
         <script src="/dist/index.umd.js"></script>
         <script>
             Vue.use(vuetifyToast, {
-                snackbarAttrs: {
-                    color: "orange",
-                },
-                icon: "",
-                iconColor: "", // default
-                classes: ["body-2"],
-                dismissable: true, // default
-                queueable: false, // default
-                showClose: false, // default
-                closeText: "", // default
-                closeIcon: "close", // default
-                closeColor: "", // default
-                slot: [], //default
+                snackbarAttrs: {},
+                dismissable: true,
+                queueable: false,
+                showClose: true,
                 shorts: {
                     success: {
                         snackbarAttrs: {
