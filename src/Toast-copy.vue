@@ -1,37 +1,60 @@
 <template>
     <v-snackbar
-        v-bind=mergedAttrs
+        :timeout="timeout"
+        :color="color"
+        :bottom="y === 'bottom'"
+        :top="y === 'top'"
+        :left="x === 'left'"
+        :right="x === 'right'"
+        :multi-line="multiLine"
+        :vertical="vertical"
         v-model="active"
-        class="v-application"
-        :class="classes">
-        <v-row @click="dismiss">
-            <v-col class="d-flex align-center">
-                <v-icon v-if="!!icon" large :color="iconColor">{{ icon }}</v-icon>
-                <span class="pl-2 text-h6 font-weight-regular">{{ message }}</span>
-            </v-col>
-        </v-row>
-        <template v-if="showClose" v-slot:action="{ attrs }">
-            <v-row>
-                <v-col class="d-flex align-center">
-                    <v-btn
-                        color="white"
-                        text
-                        v-bind="attrs"
-                        @click="close">
-                        Close
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </template>
+        class="v-application vts"
+        :class="classes"
+        @click="dismiss"
+        role="alert">
+        <v-icon
+            dark
+            left
+            v-if="!!icon"
+            class="vts__icon"
+            :color="iconColor">
+            {{ icon }}
+        </v-icon>
+
+        <div class="vts__message" :class="{ 'vts__message--padded': showClose && !closeText }">
+            <div v-html="message"></div>
+            <slot></slot>
+        </div>
+
+        <v-btn
+            :icon="!closeText"
+            :text="!!closeText"
+            class="vts__close"
+            :class="{ 'vts__close--icon': !closeText }"
+            :color="closeColor"
+            v-if="showClose"
+            @click="close">
+            <v-icon v-if="!closeText">{{ closeIcon }}</v-icon>
+            <span v-if="!!closeText">{{ closeText }}</span>
+        </v-btn>
     </v-snackbar>
 </template>
 
 <script>
     export default {
         props: {
-            snackbarAttrs: {
-                type: [String],
-                default: ""
+            x: {
+                type: String,
+                default: "right"
+            },
+            y: {
+                type: String,
+                default: "bottom"
+            },
+            color: {
+                type: String,
+                default: "info"
             },
             icon: {
                 type: String,
@@ -49,12 +72,22 @@
                 type: String,
                 default: ""
             },
-
+            timeout: {
+                type: Number,
+                default: 3000
+            },
             dismissable: {
                 type: Boolean,
                 default: true
             },
-
+            multiLine: {
+                type: Boolean,
+                default: false
+            },
+            vertical: {
+                type: Boolean,
+                default: false
+            },
             showClose: {
                 type: Boolean,
                 default: false
@@ -74,17 +107,7 @@
         },
 
         data: () => ({
-            active: false,
-            defaultSnackbarAttrs: {
-                text: false,
-                color: "success",
-                top: true,
-                bottom: false,
-                left: false,
-                timeout: 0,
-                elevation: 24,
-                multiline: false
-            }
+            active: false
         }),
 
         mounted() {
@@ -110,18 +133,6 @@
                 if (this.dismissable) {
                     this.close();
                 }
-            }
-        },
-
-        computed: {
-            mergedAttrs() {
-                window.logJson(`defaultSnackbarAttrs`, this.defaultSnackbarAttrs);
-                window.logJson(`snackbarAttrs`, this.snackbarAttrs);
-                return Object.assign(
-                    {},
-                    this.defaultSnackbarAttrs,
-                    this.snackbarAttrs
-                );
             }
         }
     };

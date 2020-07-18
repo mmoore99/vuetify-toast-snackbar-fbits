@@ -30,6 +30,7 @@ function install(Vue, globalOptions = {}) {
     }
 
     function show(message, options = {}) {
+        window.logJson("show:options", options);
         if (cmp) {
             const isQueueable = options.queueable !== undefined ? options.queueable : globalOptions.queueable;
 

@@ -2,40 +2,28 @@
 <html>
     <head>
         <title>Vuetify Toast Snackbar Demo</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet" />
+        <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet" /> -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet" />
         <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
     </head>
     <body>
         <div id="app">
             <v-app>
-                <v-content class="pa-4">
+                <v-content class="pa-6">
                     <h1>Vuetify Toast Snackbar Demo</h1>
-                    <v-btn @click="success('Hello')" color="primary">Show 'hello'</v-btn>
-                    <v-btn @click="custom('Hello from custom')">Show Custom</v-btn>
-                    <v-btn @click="error('Error')" color="primary">Show 'error'</v-btn>
-                    <v-btn @click="showToast('This is an information.', { timeout: 10000, icon: 'info', dismissable: false, showClose: true })" color="primary">Show toast for 10 sec</v-btn>
-                    <v-btn @click="clearQueue" color="primary">Clear queue</v-btn>
-                    <br />
-                    <br />
-                    <pre>
-          this.$toast.success('Hello', {
-            queueable: true
-          });
-
-          this.$toast.error('Error');
-
-          this.$toast('This is an information.', {
-            timeout: 10000,
-            icon: 'info',
-            dismissable: false,
-            showClose: true
-          });
-        </pre
-                    >
-                    <br />
-                    <br />
-                    Documentation: <a href="https://github.com/eolant/vuetify-toast-snackbar">https://github.com/eolant/vuetify-toast-snackbar</a>
+                    <div class="mt-4">
+                        <v-btn @click="success('This is a success message')" color="primary">Show Success</v-btn>
+                        <v-btn @click="error('This is a error message')" color="primary">Show Error</v-btn>
+                        <v-btn @click="info('This is a info message')" color="primary">Show Info</v-btn>
+                        <v-btn @click="warning('This is a warning message')" color="primary">Show Warning</v-btn>
+                        <br />
+                        <br />
+                        <v-btn @click="custom('This is a custom message')" color="primary">Show Custom</v-btn>
+                        <v-btn @click="showToast('This is a message with options attached.', { snackbarAttrs: { timeout: 6000, color: 'orange' }, icon: '', dismissable: false, showClose: true })" color="primary">Show toast with options</v-btn>
+                        <v-btn @click="clearQueue" color="primary">Clear queue</v-btn>
+                    </div>
                 </v-content>
             </v-app>
         </div>
@@ -46,16 +34,13 @@
         <script src="/dist/index.umd.js"></script>
         <script>
             Vue.use(vuetifyToast, {
-                x: "right", // default
-                y: "bottom", // default
-                color: "info", // default
-                icon: "info",
+                snackbarAttrs: {
+                    color: "orange",
+                },
+                icon: "",
                 iconColor: "", // default
                 classes: ["body-2"],
-                timeout: 3000, // default
                 dismissable: true, // default
-                multiLine: false, // default
-                vertical: false, // default
                 queueable: false, // default
                 showClose: false, // default
                 closeText: "", // default
@@ -63,8 +48,43 @@
                 closeColor: "", // default
                 slot: [], //default
                 shorts: {
+                    success: {
+                        snackbarAttrs: {
+                            color: "success",
+                        },
+                        icon: "mdi-check-circle-outline",
+                        iconColor: "white",
+                    },
+
+                    info: {
+                        snackbarAttrs: {
+                            color: "info",
+                        },
+                        icon: "mdi-information-outline",
+                        iconColor: "white",
+                    },
+
+                    error: {
+                        snackbarAttrs: {
+                            color: "error",
+                        },
+                        icon: "mdi-alert-circle-outline",
+                        iconColor: "white",
+                    },
+
+                    warning: {
+                        snackbarAttrs: {
+                            color: "warning",
+                        },
+                        icon: "mdi-alert-outline",
+                        iconColor: "white",
+                    },
+
                     custom: {
-                        color: "purple",
+                        snackbarAttrs: {
+                            color: "blue",
+                        },
+                        icon: "mdi-account-box",
                     },
                 },
                 property: "$toast", // default
@@ -79,17 +99,28 @@
                     success: function(text) {
                         this.$toast.success(text, {
                             queueable: true,
+                            snackbarAttrs: {},
                         });
                     },
-                    custom: function(text) {
-                        this.$toast.custom(text, {
-                            queueable: true,
-                            color: "red",
-                        });
-                    },
+
                     error: function(text) {
                         this.$toast.error(text);
                     },
+
+                    info: function(text) {
+                        this.$toast.info(text);
+                    },
+
+                    warning: function(text) {
+                        this.$toast.warning(text);
+                    },
+
+                    custom: function(text) {
+                        this.$toast.custom(text, {
+                            queueable: true,
+                        });
+                    },
+
                     showToast: function(text, opt) {
                         this.$toast(text, opt);
                     },
