@@ -16,12 +16,12 @@
                     <v-btn
                         v-if="showClose"
                         v-bind="attrs"
-                        :icon="!closeText"
-                        :text="!!closeText"
+                        :icon="isCloseIcon"
+                        :text="!isCloseIcon"
                         :color="closeColor"
                         @click="close">
-                        <v-icon v-if="!closeText" class="pr-2">{{ closeIcon }}</v-icon>
-                        <span v-if="!!closeText">{{ closeText }}</span>
+                        <v-icon v-if="isCloseIcon" class="pr-2">{{ closeIcon }}</v-icon>
+                        <span v-else>{{ closeText }}</span>
                     </v-btn>
                 </v-col>
             </v-row>
@@ -58,12 +58,12 @@
 
             dismissable: {
                 type: Boolean,
-                default: false
+                default: true
             },
 
             showClose: {
                 type: Boolean,
-                default: false
+                default: true
             },
 
             isCloseIcon: {
@@ -95,6 +95,7 @@
                 top: true,
                 bottom: false,
                 left: false,
+                right: false,
                 timeout: 0,
                 elevation: 24,
                 multiline: false
