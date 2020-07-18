@@ -1,101 +1,102 @@
-import Vue from 'vue'
-import Toast from './Toast.vue'
-import Vuetify from 'vuetify/lib'
-const ToastConstructor = Vue.extend(Toast)
+import Vue from "vue";
+import Toast from "./Toast.vue";
+import Vuetify from "vuetify/lib";
+const ToastConstructor = Vue.extend(Toast);
+
+window.logJson = (legend, object) => {
+    console.log(`${legend}:`, JSON.stringify(object, null, 4));
+};
 
 function install(Vue, globalOptions = {}) {
-  let cmp = null
-  const queue = []
-  const property = globalOptions.property || '$toast'
+    let cmp = null;
+    const queue = [];
+    const property = globalOptions.property || "$toast";
 
-  function createCmp(options) {
-    const component = new ToastConstructor()
-    const vuetifyObj = new Vuetify()
-    component.$vuetify = vuetifyObj.framework
-    const componentOptions = { ...Vue.prototype[property].globalOptions, ...options }
+    function createCmp(options) {
+        const component = new ToastConstructor();
+        const vuetifyObj = new Vuetify();
+        component.$vuetify = vuetifyObj.framework;
+        const componentOptions = { ...Vue.prototype[property].globalOptions, ...options };
 
-    if (componentOptions.slot) {
-      component.$slots.default = componentOptions.slot
-      delete componentOptions.slot
+        if (componentOptions.slot) {
+            component.$slots.default = componentOptions.slot;
+            delete componentOptions.slot;
+        }
+
+        Object.assign(component, componentOptions);
+        document.body.appendChild(component.$mount().$el);
+
+        return component;
     }
 
-    Object.assign(component, componentOptions)
-    document.body.appendChild(component.$mount().$el)
+    function show(message, options = {}) {
+        if (cmp) {
+            const isQueueable = options.queueable !== undefined ? options.queueable : globalOptions.queueable;
 
-    return component
-  }
+            if (isQueueable) {
+                queue.push({ message, options });
+            } else {
+                cmp.close();
+                queue.unshift({ message, options });
+            }
 
-  function show(message, options = {}) {
-    if (cmp) {
-      const isQueueable = options.queueable !== undefined ? options.queueable : globalOptions.queueable
+            return;
+        }
 
-      if (isQueueable) {
-        queue.push({ message, options })
-      }
-      else {
-        cmp.close()
-        queue.unshift({ message, options })
-      }
+        options.message = message;
+        cmp = createCmp(options);
+        cmp.$on("statusChange", (isActive, wasActive) => {
+            if (wasActive && !isActive) {
+                cmp.$nextTick(() => {
+                    cmp.$destroy();
+                    cmp.$el.parentNode.removeChild(cmp.$el);
+                    cmp = null;
 
-      return
+                    if (queue.length) {
+                        const toast = queue.shift();
+                        show(toast.message, toast.options);
+                    }
+                });
+            }
+        });
     }
 
-    options.message = message
-    cmp = createCmp(options)
-    cmp.$on('statusChange', (isActive, wasActive) => {
-      if (wasActive && !isActive) {
-        cmp.$nextTick(() => {
-          cmp.$destroy()
-          cmp.$el.parentNode.removeChild(cmp.$el)
-          cmp = null
+    function shorts(options) {
+        const colors = ["success", "info", "error", "warning"];
+        const methods = {};
 
-          if (queue.length) {
-            const toast = queue.shift()
-            show(toast.message, toast.options)
-          }
-        })
-      }
-    })
-  }
+        colors.forEach((color) => {
+            methods[color] = (message, options) => show(message, { color, ...options });
+        });
 
-  function shorts(options) {
-    const colors = ['success', 'info', 'error', 'warning']
-    const methods = {}
-
-    colors.forEach(color => {
-      methods[color] = (message, options) => show(message, { color, ...options })
-    })
-
-    if (options.shorts) {
-      for (let key in options.shorts) {
-        const localOptions = options.shorts[key]
-        methods[key] = (message, options) => show(message, { ...localOptions, ...options })
-      }
+        if (options.shorts) {
+            for (let key in options.shorts) {
+                const localOptions = options.shorts[key];
+                window.logJson("options", { ...options });
+                window.logJson("local options", localOptions);
+                methods[key] = (message, options) => show(message, { ...localOptions, ...options });
+            }
+        }
+        return methods;
     }
 
-    return methods
-  }
+    function getCmp() {
+        return cmp;
+    }
 
-  function getCmp() {
-    return cmp
-  }
+    function clearQueue() {
+        return queue.splice(0, queue.length);
+    }
 
-  function clearQueue() {
-    return queue.splice(0, queue.length)
-  }
-
-  Vue.prototype[property] = Object.assign(show, {
-    globalOptions,
-    getCmp,
-    clearQueue,
-    ...shorts(globalOptions)
-  })
+    Vue.prototype[property] = Object.assign(show, {
+        globalOptions,
+        getCmp,
+        clearQueue,
+        ...shorts(globalOptions),
+    });
 }
 
-function ToastSnackbar() {
+function ToastSnackbar() {}
+ToastSnackbar.install = install;
 
-}
-ToastSnackbar.install = install
-
-
-export default ToastSnackbar
+export default ToastSnackbar;
