@@ -1,7 +1,7 @@
 # Vuetify Toast Snackbar for Vuetify 2.3+
 
 > Basic Vue toast service with queue support that uses [Vuetify](https://github.com/vuetifyjs/vuetify) Snackbar component.
-> Update from https://github.com/eolant/vuetify-toast-snackbar
+> Update from https://github.com/jaredhan418/vuetify-toast-snackbar-ng
 
 ## Installation
 
@@ -14,34 +14,21 @@ npm install vuetify-toast-snackbar-ng
 ### Bundler (Webpack, Rollup)
 
 ```js
-import VuetifyToast from 'vuetify-toast-snackbar-ng'
+import VuetifyToast from "vuetify-toast-snackbar-fbits";
 
-Vue.use(VuetifyToast, {
-	x: 'right', // default
-	y: 'bottom', // default
-	color: 'info', // default
-	icon: 'info',
-	iconColor: '', // default
-	classes: [
-		'body-2'
-	],
-	timeout: 3000, // default
-	dismissable: true, // default
-	multiLine: false, // default
-	vertical: false, // default
-	queueable: false, // default
-	showClose: false, // default
-	closeText: '', // default
-	closeIcon: 'close', // default
-	closeColor: '', // default
-	slot: [], //default
-	shorts: {
-		custom: {
-			color: 'purple'
-		}
-	},
-	property: '$toast' // default
-})
+Vue.use(vuetifyToast, {
+    snackbarAttrs: {},
+    queueable: false,
+    shorts: {
+        custom: {
+            snackbarAttrs: {
+                color: "blue",
+            },
+            icon: "mdi-account-box",
+        },
+    },
+    property: "$toast", // default
+});
 ```
 
 ### Vue loader (e.g. Nuxt.js)
@@ -49,51 +36,49 @@ Vue.use(VuetifyToast, {
 Update `plugins/vuetify.js`
 
 ```js
-import Vue from 'vue'
-import Vuetify, { VSnackbar, VBtn, VIcon } from 'vuetify/lib'
-import VuetifyToast from 'vuetify-toast-snackbar-ng'
+import Vue from "vue";
+import Vuetify, { VSnackbar, VBtn, VIcon } from "vuetify/lib";
+import VuetifyToast from "vuetify-toast-snackbar-fbits";
 
 Vue.use(Vuetify, {
-  components: {
-    VSnackbar,
-    VBtn,
-    VIcon
-  }
-})
+    components: {
+        VSnackbar,
+        VRow,
+        VCol,
+        VIcon,
+        VBtn,
+    },
+});
 
-Vue.use(VuetifyToast)
+Vue.use(VuetifyToast);
 ```
 
 ### Call
 
 ```js
-this.$toast('Default toast')
+this.$toast("Default toast");
 
-this.$toast.info('Info toast')
+this.$toast.info("Info toast");
 
-this.$toast('Custom options', {
-	color: 'green',
-	dismissable: true,
-	queueable: true
-})
+this.$toast("Custom options", {
+    color: "green",
+    dismissable: true,
+    queueable: true,
+});
 
-this.$toast.custom('Custom short')
-
-this.$toast(null, {
-	slot: [this.$createElement('button', ['Click here'])]
-})
+this.$toast.custom("Custom short");
 ```
 
 ### Get currently displayed Toast component
 
 ```js
-let cmp = this.$toast.getCmp()
-cmp.message = 'Dynamic properties'
-cmp.close()
+let cmp = this.$toast.getCmp();
+cmp.message = "Dynamic properties";
+cmp.close();
 ```
 
 ### Clear Toasts queue
 
 ```js
-let queue = this.$toast.clearQueue()
+let queue = this.$toast.clearQueue();
 ```

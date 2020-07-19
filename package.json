@@ -1,10 +1,10 @@
 {
-    "name": "vuetify-toast-snackbar-ng",
-    "version": "0.7.0",
+    "name": "vuetify-toast-snackbar-fbits",
+    "version": "0.0.0",
     "description": "Basic Vue toast service that uses Vuetify Snackbar component.",
-    "author": "hanjiawei",
+    "author": "mmoore99",
     "license": "MIT",
-    "homepage": "https://github.com/jaredhan418/vuetify-toast-snackbar",
+    "homepage": "",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/jaredhan418/vuetify-toast-snackbar.git"
@@ -47,9 +47,6 @@
     "peerDependencies": {
         "vue": "*",
         "vuetify": "*"
-    },
-    "bugs": {
-        "url": "https://github.com/jaredhan418/vuetify-toast-snackbar/issues"
     },
     "directories": {
         "doc": "docs"
