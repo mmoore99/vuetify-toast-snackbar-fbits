@@ -1,13 +1,13 @@
 module.exports = {
-  plugins: {
-  	vue: true
-  },
-  globals: {
-    vue: 'Vue'
-  },
-  external: ['vue'],
-  output: {
-  	extractCSS: false
-  },
-  bundleNodeModules: true
-}
+    plugins: {
+        vue: true,
+    },
+    globals: {
+        vue: "Vue",
+    },
+    external: ["vue"],
+    output: {
+        extractCSS: false,
+    },
+    bundleNodeModules: true,
+};

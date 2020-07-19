@@ -59,7 +59,7 @@
 
             isShowClose: {
                 type: Boolean,
-                default: false
+                default: true
             },
 
             isCloseIcon: {
